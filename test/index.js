@@ -2,13 +2,15 @@
  * Created by amira on 2/8/15.
  */
 import _ from 'lodash';
-import {chai, expect, err} from 'chai';
 import sinon from 'sinon';
 import * as gopostal from '../src/index.js';
 import {Report} from '../test-kit/testDrivers/index';
-
 import testKit from '../test-kit';
+import chai from 'chai';
+const expect = chai.expect;
 chai.use(testKit.chai);
+
+import "../test-kit/test";
 
 var EXPECTED_LEVELS = ['debug', 'info', 'warn', 'error', 'fatal'];
 var PARAMS = ['TEST PARAMS', 1, {}];
