@@ -4,7 +4,7 @@
     "registry": "http://repo.dev.wix/artifactory/api/npm/npm-local/"
   },
   "name": "gopostal",
-  "version": "0.0.48",
+  "version": "0.0.49",
   "description": "logger / error reporting facade",
   "main": "dist/src",
   "repository": {
@@ -28,7 +28,7 @@
     "babel-loader": "5.1.3",
     "bluebird": "3.0.5",
     "chai": "2.3.0",
-    "core3-base": "1.5.91",
+    "core3-base": "1.5.92",
     "immutable": "3.7.3",
     "mocha": "2.2.5",
     "mocha-loader": "0.7.1",
