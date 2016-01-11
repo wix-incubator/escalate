@@ -5,7 +5,14 @@ import _ from 'lodash';
 // TODO nice logger https://github.com/visionmedia/debug
 
 export const levels = Object.freeze(['debug', 'info', 'warn', 'error', 'fatal']);
-
+const DEBUG= 0, INFO= 1, WARN= 2, ERROR= 3, FATAL=4;
+const levelIdx = Object.freeze({
+	debug:DEBUG,
+	info:INFO,
+	warn:WARN,
+	error:ERROR,
+	fatal:FATAL
+});
 export function getMailBox(context){
 	var mailBox = new Mailbox(postOfficeFactory(context));
 	mailboxes.push({mailBox, context});
@@ -17,27 +24,27 @@ class Mailbox {
 		this.postOffice = postOffice;
 	}
 	post(level, ...params){
-		var levelIndex = levels.indexOf(panicThreshold);
-		if (~levelIndex) {
+		var levelIndex = levelIdx[level];
+		if (typeof levelIndex === 'undefined') {
 			throw new Error(`log level unknown : ${level}`);
 		} else {
 			this.postOffice.post(levelIndex, ...params);
 		}
 	}
 	debug(...params){
-		this.postOffice.post(levels.indexOf('debug'), ...params);
+		this.postOffice.post(DEBUG, ...params);
 	}
 	info(...params){
-		this.postOffice.post(levels.indexOf('info'), ...params);
+		this.postOffice.post(INFO, ...params);
 	}
 	warn(...params){
-		this.postOffice.post(levels.indexOf('warn'), ...params);
+		this.postOffice.post(WARN, ...params);
 	}
 	error(...params){
-		this.postOffice.post(levels.indexOf('error'), ...params);
+		this.postOffice.post(ERROR, ...params);
 	}
 	fatal(...params){
-		this.postOffice.post(levels.indexOf('fatal'), ...params);
+		this.postOffice.post(FATAL, ...params);
 	}
 }
 

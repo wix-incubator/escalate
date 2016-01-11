@@ -2,6 +2,7 @@
  * Created by amira on 6/8/15.
  */
 import _ from 'lodash';
+import sjs from 'serialize-javascript';
 import {listen, Report} from '../testDrivers/index';
 
 
@@ -32,7 +33,11 @@ export default function (chai) {
 		var reports = listen(this._obj);
 		var paramsCandidates = _.pluck(reports.filter((r) => (!context || matchField(r.context, context)) && (!level || matchField(r.level, level))), 'params');
 		this.assert(paramsCandidates.length && matchArrayOfParamsByArrayOfMatchers(paramsCandidates, params),
-			`Expected #{this} to report, but it didn't.\n ${JSON.stringify(reports)}`,
+			`Expected #{this} to report, but it didn't.\n
+expected context: ${context}\n
+expected level: ${level}\n
+expected params: ${sjs(params)}\n
+actual: ${JSON.stringify(reports)}`,
 			`Expected #{this} not to report, but it did.\n ${JSON.stringify(reports)}`
 		);
 	});
