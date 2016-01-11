@@ -12,25 +12,25 @@ var CONTEXT = {};
 function getOneTimeReporterForLevel(reportLevel) {
 	return () => gopostal.getMailBox(CONTEXT)[reportLevel](...PARAMS);
 }
-function testMatcherConlfusionMatrix(regexMatcher, positive, negative) {
+function testMatcherConlfusionMatrix(matcher, positive, negative) {
 	it(`matches existing reports (true positive)`, () => {
 		expect(() => {
-			expect(positive).to.report(regexMatcher);
+			expect(positive).to.report(matcher);
 		}).to.not.throw();
 	});
 	it(`matches missing reports (true negative)`, () => {
 		expect(() => {
-			expect(negative).not.to.report(regexMatcher);
+			expect(negative).not.to.report(matcher);
 		}).to.not.throw();
 	});
 	it(`does not match existing reports as missing (false negative)`, () => {
 		expect(() => {
-			expect(positive).not.to.report(regexMatcher);
+			expect(positive).not.to.report(matcher);
 		}).to.throw();
 	});
 	it(`does not match missing reports as existing (false positive)`, () => {
 		expect(() => {
-			expect(negative).to.report(regexMatcher);
+			expect(negative).to.report(matcher);
 		}).to.throw();
 	})
 }
