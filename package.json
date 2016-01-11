@@ -4,7 +4,7 @@
     "registry": "http://repo.dev.wix/artifactory/api/npm/npm-local/"
   },
   "name": "gopostal",
-  "version": "0.0.56",
+  "version": "0.0.57",
   "description": "logger / error reporting facade",
   "main": "dist/src",
   "repository": {
