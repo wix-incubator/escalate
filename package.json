@@ -43,6 +43,7 @@
     "node": ">=0.12"
   },
   "dependencies": {
-    "lodash": "3.9.3"
+    "lodash": "3.9.3",
+    "serialize-javascript": "1.1.2"
   }
 }
