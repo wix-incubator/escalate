@@ -50,6 +50,9 @@ describe('gopostal testkit', () => {
 			expect(recording).to.eql([{level : reportLevel, context : CONTEXT, params : PARAMS}]);
 			expect(recording).to.eql([reportMatcher]);
 		});
+		it(`mailbox.post(${reportLevel}, ...) reports`, () => {
+			expect(() => gopostal.getMailBox(CONTEXT).post(reportLevel, ...PARAMS)).to.report(reportMatcher);
+		});
 	});
 	describe('chai matcher for regex', () => {
 		testMatcherConlfusionMatrix(
