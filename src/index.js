@@ -46,6 +46,25 @@ class Mailbox {
 	fatal(...params){
 		this.postOffice.post(FATAL, ...params);
 	}
+	levelCheck(level){
+		var levelIndex = levelIdx[level];
+		return this.postOffice.isActive(levelIndex);
+	}
+	debugCheck(){
+		return this.postOffice.isActive(DEBUG);
+	}
+	infoCheck(){
+		return this.postOffice.isActive(INFO);
+	}
+	warnCheck(){
+		return this.postOffice.isActive(WARN);
+	}
+	errorCheck(){
+		return this.postOffice.isActive(ERROR);
+	}
+	fatalCheck(){
+		return true;
+	}
 }
 
 export function config(configParams){
@@ -103,8 +122,11 @@ class PostOffice {
 			}
 		}
 	}
+	isActive(levelIndex){
+		return levelIndex >= this.logThreshold;
+	}
 	post(levelIndex, ...params){
-		if (levelIndex >= this.logThreshold){
+		if (this.isActive(levelIndex)){
 			if (levelIndex >= this.panicThreshold) {
 				this.panic(...params);
 			} else {
