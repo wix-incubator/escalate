@@ -47,6 +47,24 @@ describe('gopostal', () => {
 		it('panic throws', ()=> {
 			expect(() => originalConfig.panicStrategy()(...PARAMS), 'reporting fatal with default configuration').to.throw;
 		});
+		var checkStackTrace = function (thrower) {
+			var stack1 = new Error('hi').stack.split('\n');
+			var stack2;
+			try {
+				thrower(gopostal.getMailBox());
+			} catch (e) {
+				stack2 = e.stack.split('\n');
+			}
+			for (let i = 1; i < stack1.length; ++i) {
+				expect(stack1[i].split(/\s+/)[2], 'line ' + i).to.equal(stack2[i+1].split(/\s+/)[2]); 	// ['','at','Context.<anonymous>','(dist/test/index.js:79:43)']
+			}
+		};
+		it('.fatal() stack trace starts in same place as regular throws (transparent stack trace)', ()=> {
+			checkStackTrace( (mailBox) => mailBox.fatal('hi'));
+		});
+		it('.post("fatal") stack trace starts in same place as regular throws (transparent stack trace)', ()=> {
+			checkStackTrace( (mailBox) => mailBox.post('fatal', 'hi'));
+		});
 		['debug', 'info', 'warn', 'error'].forEach((level) => {
 			var consoleLevel = (level === 'debug') ? 'info' : level;
 			it(`logger.${level} writes to console.${consoleLevel}`, ()=> {
@@ -116,32 +134,43 @@ describe('gopostal', () => {
 							replaceAllButGopostal('logThresholdStrategy', logLevel);
 						});
 						EXPECTED_LEVELS.forEach((reportLevel, reportLevelIdx) => {
-							describe(`.${reportLevel} method`, () => {
-								beforeEach(`spy on logger.${reportLevel} and report`, ()=> {
-									logger[reportLevel] = sandbox.spy();
+							function levelTestSuite(reportFn) {
+								return () => {
+									beforeEach(`spy on logger.${reportLevel} and report`, ()=> {
+										logger[reportLevel] = sandbox.spy();
+										reportFn();
+									});
+									if (reportLevelIdx >= panicLevelIdx || reportLevelIdx < logLevelIdx) {
+										it(`logger.${reportLevel} is not called`, ()=> {
+											expect(logger[reportLevel].called, 'logger called').to.be.false;
+										});
+									} else {
+										it(`logger.${reportLevel} is called`, ()=> {
+											expect(logger[reportLevel].args, 'logger called exactly once with the expected arguments').to.eql([PARAMS]);
+										});
+									}
+									if (reportLevelIdx < panicLevelIdx) {
+										it(`panic is not called`, ()=> {
+											expect(panic.called, 'panic called').to.be.false;
+										});
+									} else {
+										it(`panic is called`, ()=> {
+											expect(panic.args, 'panic called exactly once with the expected arguments').to.eql([PARAMS]);
+										});
+									}
+								};
+							}
+							describe(`.${reportLevel} method`, levelTestSuite(() => mailBox[reportLevel](...PARAMS)));
+							describe(`.post('${reportLevel}',...) method`, levelTestSuite(() => mailBox.post(reportLevel, ...PARAMS)));
+							describe(`.${reportLevel}Check method`, () => {
+								it(`returns ${reportLevelIdx >= logLevelIdx}`, () => {
+									expect(mailBox[reportLevel+'Check']()).to.equal(reportLevelIdx >= logLevelIdx);
 								});
-								if (reportLevelIdx >= panicLevelIdx || reportLevelIdx < logLevelIdx) {
-									it(`logger.${reportLevel} is not called`, ()=> {
-										mailBox[reportLevel](...PARAMS);
-										expect(logger[reportLevel].called, 'logger called').to.be.false;
-									});
-								} else {
-									it(`logger.${reportLevel} is called`, ()=> {
-										mailBox[reportLevel](...PARAMS);
-										expect(logger[reportLevel].args, 'logger called exactly once with the expected arguments').to.eql([PARAMS]);
-									});
-								}
-								if (reportLevelIdx < panicLevelIdx) {
-									it(`panic is not called`, ()=> {
-										mailBox[reportLevel](...PARAMS);
-										expect(panic.called, 'panic called').to.be.false;
-									});
-								} else {
-									it(`panic is called`, ()=> {
-										mailBox[reportLevel](...PARAMS);
-										expect(panic.args, 'panic called exactly once with the expected arguments').to.eql([PARAMS]);
-									});
-								}
+							});
+							describe(`.levelCheck('${reportLevel}', ...) method`, () => {
+								it(`returns ${reportLevelIdx >= logLevelIdx}`, () => {
+									expect(mailBox.levelCheck(reportLevel)).to.equal(reportLevelIdx >= logLevelIdx);
+								});
 							});
 						});
 					});
