@@ -90,6 +90,11 @@ var moduleConfig = {
 	panicStrategy :  _.constant(function defaultPanic(...params){
 		var error = new Error(params.join(' '));
 		error.params = params;
+		if (error.stack) {
+			error.stack = error.stack.split('\n');
+			error.stack.splice(1, 3);
+			error.stack = error.stack.join('\n');
+		}
 		throw error;
 	}),
 	logThresholdStrategy :  _.constant('info'),

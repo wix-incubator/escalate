@@ -47,6 +47,24 @@ describe('gopostal', () => {
 		it('panic throws', ()=> {
 			expect(() => originalConfig.panicStrategy()(...PARAMS), 'reporting fatal with default configuration').to.throw;
 		});
+		var checkStackTrace = function (thrower) {
+			var stack1 = new Error('hi').stack.split('\n');
+			var stack2;
+			try {
+				thrower(gopostal.getMailBox());
+			} catch (e) {
+				stack2 = e.stack.split('\n');
+			}
+			for (let i = 1; i < stack1.length; ++i) {
+				expect(stack1[i].split(/\s+/)[2], 'line ' + i).to.equal(stack2[i+1].split(/\s+/)[2]); 	// ['','at','Context.<anonymous>','(dist/test/index.js:79:43)']
+			}
+		};
+		it('.fatal() stack trace starts in same place as regular throws (transparent stack trace)', ()=> {
+			checkStackTrace( (mailBox) => mailBox.fatal('hi'));
+		});
+		it('.post("fatal") stack trace starts in same place as regular throws (transparent stack trace)', ()=> {
+			checkStackTrace( (mailBox) => mailBox.post('fatal', 'hi'));
+		});
 		['debug', 'info', 'warn', 'error'].forEach((level) => {
 			var consoleLevel = (level === 'debug') ? 'info' : level;
 			it(`logger.${level} writes to console.${consoleLevel}`, ()=> {
