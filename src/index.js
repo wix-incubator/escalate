@@ -86,6 +86,7 @@ const DEFAULT_LOGGER = {
 	info : (...params) => console.info(...params),
 	debug : (...params) => console.info(...params) // some environments don't have console.debug
 };
+
 function defaultPanic(...params){
 	var error = new Error(params.join(' '));
 	error.params = params;
@@ -96,6 +97,8 @@ function defaultPanic(...params){
 	}
 	throw error;
 }
+
+// by default, ignore context and supply preset values
 var moduleConfig = {
 	loggerStrategy : (ctx) => DEFAULT_LOGGER,
 	panicStrategy :  (ctx) => defaultPanic,
