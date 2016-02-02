@@ -1,6 +1,6 @@
 module.exports = {
 	context: __dirname,
-	devtool: 'eval',
+	devtool: 'eval-source-map',
 	entry: {
 		'gopostal'              : [	'./src' ],
 		'test-kit'              : [ './test-kit' ],
