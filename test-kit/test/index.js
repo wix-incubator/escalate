@@ -2,7 +2,6 @@
  * Created by amira on 6/8/15.
  */
 import {expect} from "chai";
-import _ from 'lodash';
 import * as gopostal from '../../src/index';
 import {listen, Report} from '../testDrivers/index';
 
