@@ -12,9 +12,9 @@
     "url": "git+ssh://git@github.com:wix/gopostal"
   },
   "scripts": {
-    "build:src": "babel ./src/ -d ./dist/src/ --modules umd --source-maps",
-    "build:test": "babel ./test/ -d ./dist/test/ --modules umd --source-maps",
-    "build:testkit": "babel ./test-kit/ -d ./dist/test-kit/ --modules umd --source-maps",
+    "build:src": "babel ./src/ -d ./dist/src/ --source-maps",
+    "build:test": "babel ./test/ -d ./dist/test/ --source-maps",
+    "build:testkit": "babel ./test-kit/ -d ./dist/test-kit/ --source-maps",
     "pretest": "npm run build:test && npm run build:testkit",
     "publish:tc": "ci",
     "test": "mocha --reporter list ./dist/test",
@@ -26,6 +26,7 @@
     "babel-cli": "6.4.5",
     "babel-core": "6.4.5",
     "babel-loader": "6.2.1",
+    "babel-plugin-transform-es2015-modules-umd": "6.4.3",
     "babel-preset-es2015": "6.3.13",
     "bluebird": "3.0.5",
     "chai": "3.5.0",
