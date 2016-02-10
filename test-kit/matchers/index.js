@@ -13,7 +13,7 @@ function matchField(reported, matcher){
 }
 
 function matchParamsByArray(reportedParams, matcherArr) {
-	return _.all(matcherArr, matcher => _.some(reportedParams, param => matchField(param, matcher)));
+	return _.every(matcherArr, matcher => _.some(reportedParams, param => matchField(param, matcher)));
 }
 
 function matchArrayOfParamsByArrayOfMatchers(reportedParamsArr, matcherArr){
@@ -31,7 +31,7 @@ export default function (chai) {
 	 */
 	chai.Assertion.addMethod("report", function reportImpl({context, level, params}) {
 		var reports = listen(this._obj);
-		var paramsCandidates = _.pluck(reports.filter((r) => (!context || matchField(r.context, context)) && (!level || matchField(r.level, level))), 'params');
+		var paramsCandidates = _.map(reports.filter((r) => (!context || matchField(r.context, context)) && (!level || matchField(r.level, level))), 'params');
 		this.assert(paramsCandidates.length && matchArrayOfParamsByArrayOfMatchers(paramsCandidates, params),
 			`Expected #{this} to report, but it didn't.\n
 expected context: ${context}\n
