@@ -1,38 +1,37 @@
 {
-  "private": false,
-  "publishConfig": {
-    "registry": "http://repo.dev.wix/artifactory/api/npm/npm-local/"
-  },
   "name": "gopostal",
   "version": "0.0.61",
   "description": "logger / error reporting facade",
-  "main": "dist/src",
+  "license" : "SEE LICENSE IN LICENSE.md",
+  "publishConfig": {
+    "registry": "http://repo.dev.wix/artifactory/api/npm/npm-local/"
+  },
   "repository": {
     "type": "git",
     "url": "git+ssh://git@github.com:wix/gopostal"
   },
+  "main": "dist/src",
   "scripts": {
     "build:src": "babel ./src/ -d ./dist/src/ --modules umd --source-maps",
     "build:test": "babel ./test/ -d ./dist/test/ --modules umd --source-maps",
     "build:testkit": "babel ./test-kit/ -d ./dist/test-kit/ --modules umd --source-maps",
     "pretest": "npm run build:test && npm run build:testkit",
     "publish:tc": "ci",
-    "test": "mocha --reporter $npm_config_reporter ./dist/test",
+    "test": "mocha --reporter mocha-env-reporter ./dist/test",
     "start": "webpack-dev-server --progress --hot --inline --no-colors"
   },
-  "author": "core3",
-  "license": "c",
+  "author": "Amir Arad <amira@wix.com> (http ://github.com/amir-arad)",
+  "contributors": ["Amir Arad <amira@wix.com> (http://github.com/amir-arad)"],
   "devDependencies": {
     "babel": "5.8.35",
     "babel-core": "5.8.35",
     "babel-loader": "5.4.0",
     "chai": "3.5.0",
-    "immutable": "3.7.6",
     "mocha": "2.4.5",
     "mocha-loader": "0.7.1",
-    "mocha-teamcity-reporter": "1.0.0",
+    "mocha-env-reporter": "1.0.0",
     "sinon": "git://github.com/cjohansen/Sinon.JS.git#b672042043517b9f84e14ed0fb8265126168778a",
-    "webpack": "1.12.13",
+    "webpack": "1.12.14",
     "webpack-dev-server": "1.14.1"
   },
   "engines": {
@@ -40,6 +39,6 @@
   },
   "dependencies": {
     "lodash": "3.10.1",
-    "serialize-javascript": "1.1.2"
+    "serialize-javascript": "1.2.0"
   }
 }
