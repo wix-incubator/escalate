@@ -1,5 +1,5 @@
 # Escalate
- 
+[![npm version](https://badge.fury.io/js/escalate.svg)](https://badge.fury.io/js/escalate)
 A generic logger / error reporting facade. 
 Can apply different loggers to different logging contexts, and escalate logging into runtime errors.
 Provides a useful test-kit to check that your code issues the expected log.
