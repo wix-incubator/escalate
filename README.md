@@ -6,7 +6,7 @@ Provides a useful test-kit to check that your code issues the expected log.
 ## Usage
 In your code:
 ### Logging
-```es2015
+```es6
 import {getMailBox} from 'gopostal';
 const MAILBOX = getMailBox(context);
 ```
@@ -14,23 +14,23 @@ where ```context``` can be anything you want to use to identify the logging even
 Usually, that would be a string namespace in dot notation, like ```'my.beautiful.library'```.
 Naming the instance ```MAILBOX``` is a code convention that will allow future tools to filter some logging invocation from the code before producing a production version.
 then issue reports like so:
-```es2015
+```es6
 MAILBOX.error(`Something unexpected happened: ${message}`);
 ```
 or like so:
-```es2015
+```es6
 MAILBOX.post('error', misMatchMessage(errorContext,fieldDef,fieldDef.defaults(),path));
 ```
 supported logging levels: ```debug, info, warn, error, fatal'```
 By default, the ```debug``` level is ignored, and the ```error``` and ```fatal``` levels will throw an error.
 ### Configuring
 You can configure the behavior by using the ```config``` method:
-```es2015
+```es6
 import {config} from 'gopostal';
 config(configuration);
 ```
 The ```configuration``` object may have any of 4 optional methods:
-```es2015
+```es6
 {
   loggerStrategy : (context) => logger
   panicStrategy : (context) => panic
@@ -39,7 +39,7 @@ The ```configuration``` object may have any of 4 optional methods:
 }
 ```
 The ```logger``` type has 4 mandatory handler methods, named```debug, info, warn, error'```. By default, this will be used:
-```es2015
+```es6
 let logger = {
   error : (...params) => console.error(...params),
   warn : (...params) => console.warn(...params),
@@ -48,7 +48,7 @@ let logger = {
 };
 ```
 The ```panic``` type is a method that will be called whenever a logging event that passes the panic threshold occures. for example:
-```es2015
+```es6
 function panic(...params){
   throw new Error(params.join(' '));
 }
