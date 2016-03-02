@@ -80,25 +80,30 @@ export function config(configParams){
 	return _.cloneDeep(moduleConfig);
 }
 
+const DEFAULT_LOGGER = {
+	error : (...params) => console.error(...params),
+	warn : (...params) => console.warn(...params),
+	info : (...params) => console.info(...params),
+	debug : (...params) => console.info(...params) // some environments don't have console.debug
+};
+
+function defaultPanic(...params){
+	var error = new Error(params.join(' '));
+	error.params = params;
+	if (error.stack) {
+		error.stack = error.stack.split('\n');
+		error.stack.splice(1, 3);
+		error.stack = error.stack.join('\n');
+	}
+	throw error;
+}
+
+// by default, ignore context and supply preset values
 var moduleConfig = {
-	loggerStrategy :  _.constant({
-		error : (...params) => console.error(...params),
-		warn : (...params) => console.warn(...params),
-		info : (...params) => console.info(...params),
-		debug : (...params) => console.info(...params) // some environments don't have console.debug
-	}),
-	panicStrategy :  _.constant(function defaultPanic(...params){
-		var error = new Error(params.join(' '));
-		error.params = params;
-		if (error.stack) {
-			error.stack = error.stack.split('\n');
-			error.stack.splice(1, 3);
-			error.stack = error.stack.join('\n');
-		}
-		throw error;
-	}),
-	logThresholdStrategy :  _.constant('info'),
-	panicThresholdStrategy :  _.constant('error')
+	loggerStrategy : (ctx) => DEFAULT_LOGGER,
+	panicStrategy :  (ctx) => defaultPanic,
+	logThresholdStrategy :  (ctx) => 'info' ,
+	panicThresholdStrategy :  (ctx) => 'error'
 };
 
 var mailboxes = [];
