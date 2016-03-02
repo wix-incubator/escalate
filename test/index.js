@@ -55,7 +55,8 @@ describe('gopostal', () => {
 			} catch (e) {
 				stack2 = e.stack.split('\n');
 			}
-			for (let i = 1; i < stack1.length; ++i) {
+			const shorterStack=_.min([stack1.length, stack2.length]) -1;
+			for (let i = 1; i < shorterStack; ++i) {
 				expect(stack1[i].split(/\s+/)[2], 'line ' + i).to.equal(stack2[i+1].split(/\s+/)[2]); 	// ['','at','Context.<anonymous>','(dist/test/index.js:79:43)']
 			}
 		};
