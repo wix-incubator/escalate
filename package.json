@@ -16,7 +16,6 @@
     "build:test": "babel ./test/ -d ./dist/test/ --modules umd --source-maps",
     "build:testkit": "babel ./test-kit/ -d ./dist/test-kit/ --modules umd --source-maps",
     "pretest": "npm run build:test && npm run build:testkit",
-    "publish:tc": "ci",
     "test": "mocha --reporter mocha-env-reporter ./dist/test",
     "start": "webpack-dev-server --progress --hot --inline --no-colors"
   },
@@ -32,7 +31,7 @@
     "mocha": "2.4.5",
     "mocha-loader": "0.7.1",
     "mocha-env-reporter": "1.0.0",
-    "sinon": "git://github.com/cjohansen/Sinon.JS.git#b672042043517b9f84e14ed0fb8265126168778a",
+    "sinon": "1.17.3",
     "webpack": "1.12.14",
     "webpack-dev-server": "1.14.1"
   },
