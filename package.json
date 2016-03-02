@@ -1,8 +1,8 @@
 {
   "name": "gopostal",
-  "version": "0.0.61",
+  "version": "0.0.62",
   "description": "logger / error reporting facade",
-  "license" : "SEE LICENSE IN LICENSE.md",
+  "license": "SEE LICENSE IN LICENSE.md",
   "publishConfig": {
     "registry": "http://repo.dev.wix/artifactory/api/npm/npm-local/"
   },
@@ -21,7 +21,9 @@
     "start": "webpack-dev-server --progress --hot --inline --no-colors"
   },
   "author": "Amir Arad <amira@wix.com> (http ://github.com/amir-arad)",
-  "contributors": ["Amir Arad <amira@wix.com> (http://github.com/amir-arad)"],
+  "contributors": [
+    "Amir Arad <amira@wix.com> (http://github.com/amir-arad)"
+  ],
   "devDependencies": {
     "babel": "5.8.35",
     "babel-core": "5.8.35",
