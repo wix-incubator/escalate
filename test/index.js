@@ -108,7 +108,7 @@ describe('escalate', () => {
 	});
 	describe('mailbox', () => {
 		var mailBox, logger, panic;
-		function replaceAllButGopostal(field, replacement){
+		function replaceAllButEscalate(field, replacement){
 			var config = {};
 			config[field] = (ctx) => ctx === 'escalate'? originalConfig[field](ctx) : replacement;
 			escalate.config(config);
@@ -117,22 +117,22 @@ describe('escalate', () => {
 			logger = {};
 			panic = sandbox.spy();
 			mailBox = escalate.getMailBox('some context');
-			replaceAllButGopostal('loggerStrategy', logger);
-			replaceAllButGopostal('panicStrategy', panic);
+			replaceAllButEscalate('loggerStrategy', logger);
+			replaceAllButEscalate('panicStrategy', panic);
 		});
 
 		EXPECTED_LEVELS.forEach((panicLevel, panicLevelIdx) => {
 			describe(`with panic threshold ${panicLevel}`, () => {
 				beforeEach('reset log level to avoid it being higher than panic level', () => {
-					replaceAllButGopostal('logThresholdStrategy', 'debug');
+					replaceAllButEscalate('logThresholdStrategy', 'debug');
 				});
 				beforeEach(`panic threshold ${panicLevel}`, () => {
-					replaceAllButGopostal('panicThresholdStrategy', panicLevel);
+					replaceAllButEscalate('panicThresholdStrategy', panicLevel);
 				});
 				EXPECTED_LEVELS.slice(0, panicLevelIdx + 1).forEach((logLevel, logLevelIdx) => {
 					describe(`and log threshold ${logLevel}`, () => {
 						beforeEach(`log threshold ${logLevel}`, () => {
-							replaceAllButGopostal('logThresholdStrategy', logLevel);
+							replaceAllButEscalate('logThresholdStrategy', logLevel);
 						});
 						EXPECTED_LEVELS.forEach((reportLevel, reportLevelIdx) => {
 							function levelTestSuite(reportFn) {

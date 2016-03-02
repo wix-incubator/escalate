@@ -1,4 +1,4 @@
-# GoPostal
+# Escalate
  
 A generic logger / error reporting facade. 
 Can apply different loggers to different logging contexts, and escalate logging into runtime errors.
