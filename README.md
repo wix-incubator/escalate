@@ -56,6 +56,8 @@ function panic(...params){
 ```logThresholdStrategy``` and ```panicThresholdStrategy``` are methods that accept a context and return a logging level (string). 
 Any log event that is below the logging threshold returned by ```logThresholdStrategy``` will be ignored at runtime, while any log event that is equal or above the logging threshold returned by ```panicThresholdStrategy``` will escalate to the panic returned by ```panicStrategy```.
 
+## No Semantic verisoning yet (alpha phase)
+This software is in alpha version phase, and so does not respect semantic versioning yet. Breaking changes may occur between patch versions. 
 ## Develop
 - to install
 ```$
