@@ -2,14 +2,14 @@
  * Created by amira on 6/8/15.
  */
 import {expect} from "chai";
-import * as gopostal from '../../src/index';
+import * as escalate from '../../src/index';
 import {listen, Report} from '../testDrivers/index';
 
 
 var PARAMS = ['TEST PARAMS', 1, {}];
 var CONTEXT = {};
 function getOneTimeReporterForLevel(reportLevel) {
-	return () => gopostal.getMailBox(CONTEXT)[reportLevel](...PARAMS);
+	return () => escalate.getMailBox(CONTEXT)[reportLevel](...PARAMS);
 }
 function testMatcherConlfusionMatrix(matcher, positive, negative) {
 	it(`matches existing reports (true positive)`, () => {
@@ -33,11 +33,11 @@ function testMatcherConlfusionMatrix(matcher, positive, negative) {
 		}).to.throw();
 	})
 }
-describe('gopostal testkit', () => {
-	gopostal.levels.forEach((reportLevel, reportIdx) => {
+describe('escalate testkit', () => {
+	escalate.levels.forEach((reportLevel, reportIdx) => {
 		var reportMatcher = new Report(reportLevel, CONTEXT, PARAMS);
 		var reporterForLevel = getOneTimeReporterForLevel(reportLevel);
-		var reporterForAnotherLevel = getOneTimeReporterForLevel(gopostal.levels[(reportIdx + 1) % gopostal.levels.length]);
+		var reporterForAnotherLevel = getOneTimeReporterForLevel(escalate.levels[(reportIdx + 1) % escalate.levels.length]);
 		describe(`exact chai matcher for '${reportLevel}' level`, () => {
 			testMatcherConlfusionMatrix(
 				reportMatcher, 
@@ -50,7 +50,7 @@ describe('gopostal testkit', () => {
 			expect(recording).to.eql([reportMatcher]);
 		});
 		it(`mailbox.post(${reportLevel}, ...) reports`, () => {
-			expect(() => gopostal.getMailBox(CONTEXT).post(reportLevel, ...PARAMS)).to.report(reportMatcher);
+			expect(() => escalate.getMailBox(CONTEXT).post(reportLevel, ...PARAMS)).to.report(reportMatcher);
 		});
 	});
 	describe('chai matcher for regex', () => {

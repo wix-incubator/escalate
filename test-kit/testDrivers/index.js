@@ -2,10 +2,10 @@
  * Created by amira on 9/8/15.
  */
 
-import * as gopostal from '../../src/index';
+import * as escalate from '../../src/index';
 
 
-export function listen(actions, filter = (ctx => ctx != 'gopostal')) {
+export function listen(actions, filter = (ctx => ctx != 'escalate')) {
 	return new Recorder().record(actions, filter).reports;
 }
 class Recorder{
@@ -16,10 +16,10 @@ class Recorder{
 
 	record(actions, filter = _.constant(true)){
 		// save old config
-		var oldConfig = gopostal.config();
+		var oldConfig = escalate.config();
 		try {
-			// spy on gopostal
-			gopostal.config({
+			// spy on escalate
+			escalate.config({
 				loggerStrategy: ctx => filter(ctx) ? {
 					debug: spyReporter(this.reports, 'debug', ctx),
 					info: spyReporter(this.reports, 'info', ctx),
@@ -34,7 +34,7 @@ class Recorder{
 			actions();
 			// restore config
 		} finally {
-			gopostal.config(oldConfig);
+			escalate.config(oldConfig);
 		}
 		return this;
 	}
