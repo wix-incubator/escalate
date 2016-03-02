@@ -2,7 +2,7 @@ module.exports = {
 	context: __dirname,
 	devtool: 'eval',
 	entry: {
-		'gopostal'              : [	'./src' ],
+		'escalate'              : [	'./src' ],
 		'test-kit'              : [ './test-kit' ],
 		'test'                  : ['mocha!./test']
 	},

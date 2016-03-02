@@ -146,4 +146,4 @@ class PostOffice {
 	}
 }
 
-const MAILBOX = getMailBox('gopostal');
+const MAILBOX = getMailBox('escalate');

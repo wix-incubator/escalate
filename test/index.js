@@ -3,7 +3,7 @@
  */
 import _ from 'lodash';
 import sinon from 'sinon';
-import * as gopostal from '../src/index.js';
+import * as escalate from '../src/index.js';
 import {Report} from '../test-kit/testDrivers/index';
 import testKit from '../test-kit';
 import chai from 'chai';
@@ -15,21 +15,21 @@ import "../test-kit/test";
 var EXPECTED_LEVELS = ['debug', 'info', 'warn', 'error', 'fatal'];
 var PARAMS = ['TEST PARAMS', 1, {}];
 
-describe('gopostal', () => {
+describe('escalate', () => {
 	var sandbox, originalConfig;
 	after(() => {
 		sandbox.restore();
 	});
 	before('save original configuration', () => {
-		originalConfig = gopostal.config();
+		originalConfig = escalate.config();
 		sandbox = sinon.sandbox.create();
 	});
 	afterEach('reset configurations', () => {
-		gopostal.config(originalConfig);
+		escalate.config(originalConfig);
 	});
 	EXPECTED_LEVELS.forEach((level) => {
 		it(`${level} is a legal report level`, ()=> {
-			expect(gopostal.levels).to.contain(level);
+			expect(escalate.levels).to.contain(level);
 		});
 	});
 	describe('default configuration', () => {
@@ -51,7 +51,7 @@ describe('gopostal', () => {
 			var stack1 = new Error('hi').stack.split('\n');
 			var stack2;
 			try {
-				thrower(gopostal.getMailBox());
+				thrower(escalate.getMailBox());
 			} catch (e) {
 				stack2 = e.stack.split('\n');
 			}
@@ -78,29 +78,29 @@ describe('gopostal', () => {
 	});
 	describe('.config()', () => {
 		beforeEach('reset configurations', () => {
-			gopostal.config(originalConfig);
+			escalate.config(originalConfig);
 		});
 		it('returns updated configuration', ()=> {
-			var comparisonBase = gopostal.config();
+			var comparisonBase = escalate.config();
 			var func = _.constant('warn');
-			var newConfig = gopostal.config({logThresholdStrategy: func});
+			var newConfig = escalate.config({logThresholdStrategy: func});
 			comparisonBase.logThresholdStrategy = func;
 			expect(comparisonBase).to.eql(newConfig);
 		});
 		it('returns detached configuration', ()=> {
-			gopostal.config().loggerStrategy = null;
-			expect(gopostal.config(), 'current config').to.eql(originalConfig);
+			escalate.config().loggerStrategy = null;
+			expect(escalate.config(), 'current config').to.eql(originalConfig);
 		});
 		it('accepts partial configuration', ()=> {
-			gopostal.config({loggerStrategy: originalConfig.loggerStrategy});
-			gopostal.config({panicStrategy: originalConfig.panicStrategy});
-			gopostal.config({logThresholdStrategy: originalConfig.logThresholdStrategy});
-			gopostal.config({panicThresholdStrategy: originalConfig.panicThresholdStrategy});
+			escalate.config({loggerStrategy: originalConfig.loggerStrategy});
+			escalate.config({panicStrategy: originalConfig.panicStrategy});
+			escalate.config({logThresholdStrategy: originalConfig.logThresholdStrategy});
+			escalate.config({panicThresholdStrategy: originalConfig.panicThresholdStrategy});
 		});
 		it('affects pre-existing mailboxes', ()=> {
-			var mailBox = gopostal.getMailBox();
+			var mailBox = escalate.getMailBox();
 			var panicSpy = sandbox.spy();
-			gopostal.config({panicStrategy: _.constant(panicSpy)});
+			escalate.config({panicStrategy: _.constant(panicSpy)});
 			expect (()=> mailBox.fatal(...PARAMS), 'reporting fatal after overriding panic').not.to.throw();
 			expect(panicSpy.calledOnce, 'panicSpy called once').to.be.true;
 			expect(panicSpy.calledWithExactly(...PARAMS), 'panicSpy called with expected args').to.be.true;
@@ -110,13 +110,13 @@ describe('gopostal', () => {
 		var mailBox, logger, panic;
 		function replaceAllButGopostal(field, replacement){
 			var config = {};
-			config[field] = (ctx) => ctx === 'gopostal'? originalConfig[field](ctx) : replacement;
-			gopostal.config(config);
+			config[field] = (ctx) => ctx === 'escalate'? originalConfig[field](ctx) : replacement;
+			escalate.config(config);
 		}
 		beforeEach('init per test', ()=>{
 			logger = {};
 			panic = sandbox.spy();
-			mailBox = gopostal.getMailBox('some context');
+			mailBox = escalate.getMailBox('some context');
 			replaceAllButGopostal('loggerStrategy', logger);
 			replaceAllButGopostal('panicStrategy', panic);
 		});

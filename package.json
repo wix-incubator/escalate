@@ -1,5 +1,5 @@
 {
-  "name": "gopostal",
+  "name": "escalate",
   "version": "0.0.62",
   "description": "logger / error reporting facade",
   "license": "SEE LICENSE IN LICENSE.md",
@@ -8,7 +8,7 @@
   },
   "repository": {
     "type": "git",
-    "url": "git+ssh://git@github.com:wix/gopostal"
+    "url": "git+ssh://git@github.com:wix/escalate"
   },
   "main": "dist/src",
   "scripts": {

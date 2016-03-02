@@ -7,7 +7,7 @@ Provides a useful test-kit to check that your code issues the expected log.
 In your code:
 ### Logging
 ```es6
-import {getMailBox} from 'gopostal';
+import {getMailBox} from 'escalate';
 const MAILBOX = getMailBox(context);
 ```
 where ```context``` can be anything you want to use to identify the logging events from that specific instance.
@@ -26,7 +26,7 @@ By default, the ```debug``` level is ignored, and the ```error``` and ```fatal``
 ### Configuring
 You can configure the behavior by using the ```config``` method:
 ```es6
-import {config} from 'gopostal';
+import {config} from 'escalate';
 config(configuration);
 ```
 The ```configuration``` object may have any of 4 optional methods:
