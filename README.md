@@ -1,9 +1,9 @@
 # Escalate
 [![npm version](https://badge.fury.io/js/escalate.svg)](https://badge.fury.io/js/escalate)
 
-A generic logger / error reporting facade. 
-Can apply different loggers to different logging contexts, and escalate logging into runtime errors.
-Provides a useful test-kit to check that your code issues the expected log.
+A generic logger / error reporting facade. Can apply different loggers to different logging contexts, and escalate logging into runtime errors.
+
+It is said that most problems in the computer science can be solve by adding the right amount of indirection. Escalate provides a way to intervene and decide what to do with logging and throwing and errors. This allows you test how non functional code behaves. 
 ## Usage
 In your code:
 ### Logging
