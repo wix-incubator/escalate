@@ -3,7 +3,7 @@
 
 A generic logger / error reporting facade. Can apply different loggers to different logging contexts, and escalate logging into runtime errors.
 
-It is said that most problems in the computer science can be solve by adding the right amount of indirection. Escalate provides a way to intervene and decide what to do with logging and throwing and errors. This allows you test how non functional code behaves. 
+It is said that most problems in the computer science can be solve by adding the right amount of indirection. Escalate provides a way (of inderction) to intervene and decide what to do with logging and throwing errors. This allows you test how non functional code behaves. 
 ## Usage
 In your code:
 ### Logging
