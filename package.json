@@ -13,7 +13,6 @@
     "build:test": "babel ./test/ -d ./dist/test/ --modules umd --source-maps",
     "build:testkit": "babel ./test-kit/ -d ./dist/test-kit/ --modules umd --source-maps",
     "pretest": "npm run build:test && npm run build:testkit",
-    "publish:tc": "ci",
     "test": "mocha --reporter mocha-env-reporter ./dist/test",
     "start": "webpack-dev-server --progress --hot --inline --no-colors"
   },
