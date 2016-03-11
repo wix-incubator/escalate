@@ -1,7 +1,7 @@
 /**
  * Created by amira on 2/8/15.
  */
-import _ from 'lodash';
+import * as _ from 'lodash';
 // TODO nice logger https://github.com/visionmedia/debug
 
 export const levels = Object.freeze(['debug', 'info', 'warn', 'error', 'fatal']);

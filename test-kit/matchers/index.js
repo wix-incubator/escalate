@@ -1,7 +1,7 @@
 /**
  * Created by amira on 6/8/15.
  */
-import _ from 'lodash';
+import * as _ from 'lodash';
 import sjs from 'serialize-javascript';
 import {listen, Report} from '../testDrivers/index';
 
