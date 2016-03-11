@@ -1,7 +1,7 @@
 /**
  * Created by amira on 2/8/15.
  */
-import _ from 'lodash';
+import * as _ from 'lodash';
 import sinon from 'sinon';
 import * as escalate from '../src/index.js';
 import {Report} from '../test-kit/testDrivers/index';
