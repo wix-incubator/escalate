@@ -1,6 +1,6 @@
 {
   "name": "escalate",
-  "version": "0.0.68",
+  "version": "0.0.69",
   "description": "logger / error reporting facade",
   "license": "SEE LICENSE IN LICENSE.md",
   "repository": {
