@@ -38,7 +38,7 @@
     "node": ">=0.12"
   },
   "dependencies": {
-    "lodash": "4.7.0",
+    "lodash": "4.8.2",
     "serialize-javascript": "1.2.0"
   },
   "babel": {
