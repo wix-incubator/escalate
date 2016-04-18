@@ -31,14 +31,14 @@
     "mocha-env-reporter": "1.0.2",
     "mocha-loader": "0.7.1",
     "sinon": "git://github.com/cjohansen/Sinon.JS.git#b672042043517b9f84e14ed0fb8265126168778a",
-    "webpack": "1.12.15",
+    "webpack": "1.13.0",
     "webpack-dev-server": "1.14.1"
   },
   "engines": {
     "node": ">=0.12"
   },
   "dependencies": {
-    "lodash": "4.10.0",
+    "lodash": "4.11.1",
     "serialize-javascript": "1.2.0"
   },
   "babel": {
