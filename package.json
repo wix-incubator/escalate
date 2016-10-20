@@ -1,6 +1,6 @@
 {
   "name": "escalate",
-  "version": "0.0.148",
+  "version": "0.0.149",
   "description": "logger / error reporting facade",
   "license": "SEE LICENSE IN LICENSE.md",
   "repository": {
@@ -30,7 +30,7 @@
     "mocha": "3.1.2",
     "mocha-env-reporter": "2.0.4",
     "mocha-loader": "1.0.0",
-    "npminject": "1.0.71",
+    "npminject": "1.0.72",
     "sinon": "git://github.com/cjohansen/Sinon.JS.git#b672042043517b9f84e14ed0fb8265126168778a",
     "webpack": "1.13.2",
     "webpack-dev-server": "1.16.2"
