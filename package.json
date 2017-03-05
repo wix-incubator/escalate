@@ -1,6 +1,6 @@
 {
   "name": "escalate",
-  "version": "0.0.283",
+  "version": "0.0.284",
   "description": "logger / error reporting facade",
   "license": "SEE LICENSE IN LICENSE.md",
   "repository": {
@@ -30,7 +30,7 @@
     "mocha": "3.2.0",
     "mocha-env-reporter": "2.0.4",
     "mocha-loader": "1.1.1",
-    "npminject": "1.0.205",
+    "npminject": "1.0.206",
     "sinon": "2.0.0-pre.6",
     "webpack": "1.14.0",
     "webpack-dev-server": "1.16.2"
