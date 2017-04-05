@@ -178,5 +178,24 @@ describe('escalate', () => {
 				});
 			});
 		});
+		it('timers',()=>{
+			const clock = sandbox.useFakeTimers();
+			escalate.config(originalConfig);
+			const infoSpy = sandbox.spy();
+			escalate.config({
+				activateTimers:true,
+				loggerStrategy:(context)=>({
+					info:infoSpy,
+					warn:()=>{},
+					error:()=>{},
+					log:()=>{}
+				})
+			})
+			mailBox.startTimer('a');
+			clock.tick(5);
+			
+			mailBox.endTimer('a');
+			expect(infoSpy.args).to.be.eql([['timer a took 5','timer','a',5]]);
+		});
 	});
 });

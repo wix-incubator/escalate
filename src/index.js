@@ -14,13 +14,31 @@ const levelIdx = Object.freeze({
 	fatal:FATAL
 });
 export function getMailBox(context){
-	var mailBox = new Mailbox(postOfficeFactory(context));
+	const timers = {};
+	var mailBox = new Mailbox(postOfficeFactory(context))
+	mailBox.startTimer = function(id){
+		if(timers[id]!==undefined){
+			this.warn('Escalate timer already started '+id);
+		}else{
+			timers[id] = Date.now();
+		}
+	}
+	mailBox.endTimer = function(id){
+		console.log('end timer');
+		if(timers[id]===undefined){
+			this.warn('Escalate timer not started '+id);
+		}else{
+			const timeTaken =  Date.now() - timers[id];
+			this.info('timer '+id+' took '+timeTaken,'timer',id,timeTaken);
+			delete timers[id];
+		}
+	}
 	mailboxes.push({mailBox, context});
 	return mailBox;
 }
-
 class Mailbox {
 	constructor(postOffice){
+		this.timers = {};
 		this.postOffice = postOffice;
 	}
 	post(level, ...params){
@@ -35,6 +53,7 @@ class Mailbox {
 		this.postOffice.post(DEBUG, ...params);
 	}
 	info(...params){
+		console.log('posting',...params);
 		this.postOffice.post(INFO, ...params);
 	}
 	warn(...params){
@@ -45,6 +64,10 @@ class Mailbox {
 	}
 	fatal(...params){
 		this.postOffice.post(FATAL, ...params);
+	}
+	startTimer(id){
+	}
+	endTimer(id){
 	}
 	levelCheck(level){
 		var levelIndex = levelIdx[level];
@@ -103,7 +126,8 @@ var moduleConfig = {
 	loggerStrategy : (ctx) => DEFAULT_LOGGER,
 	panicStrategy :  (ctx) => defaultPanic,
 	logThresholdStrategy :  (ctx) => 'info' ,
-	panicThresholdStrategy :  (ctx) => 'error'
+	panicThresholdStrategy :  (ctx) => 'error',
+	activateTimers: false
 };
 
 var mailboxes = [];
@@ -136,10 +160,14 @@ class PostOffice {
 		return levelIndex >= this.logThreshold;
 	}
 	post(levelIndex, ...params){
+		
 		if (this.isActive(levelIndex)){
 			if (levelIndex >= this.panicThreshold) {
+				console.log('posting panic');
 				this.panic(...params);
 			} else {
+				console.log('posting info',levels[levelIndex], ...params,this.logger[levels[levelIndex]]);
+				
 				this.logger[levels[levelIndex]](...params);
 			}
 		}
