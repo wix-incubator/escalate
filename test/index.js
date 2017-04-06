@@ -180,7 +180,7 @@ describe('escalate', () => {
 		});
 		describe('timers', () => {
 
-			it.only('should log info with time duration', ()=>{
+			it('should log info with time duration', ()=>{
 				const clock = sandbox.useFakeTimers();
 				escalate.config(originalConfig);
 				const infoSpy = sandbox.spy();
