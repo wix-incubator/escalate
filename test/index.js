@@ -178,24 +178,49 @@ describe('escalate', () => {
 				});
 			});
 		});
-		it('timers',()=>{
-			const clock = sandbox.useFakeTimers();
-			escalate.config(originalConfig);
-			const infoSpy = sandbox.spy();
-			escalate.config({
-				activateTimers:true,
-				loggerStrategy:(context)=>({
-					info:infoSpy,
-					warn:()=>{},
-					error:()=>{},
-					log:()=>{}
+		describe('timers', () => {
+
+			it.only('should log info with time duration', ()=>{
+				const clock = sandbox.useFakeTimers();
+				escalate.config(originalConfig);
+				const infoSpy = sandbox.spy();
+				escalate.config({
+					activateTimers:true,
+					loggerStrategy:(context)=>({
+						info:infoSpy,
+						warn:()=>{},
+						error:()=>{},
+						log:()=>{}
+					})
 				})
-			})
-			mailBox.startTimer('a');
-			clock.tick(5);
-			
-			mailBox.endTimer('a');
-			expect(infoSpy.args).to.be.eql([['timer a took 5','timer','a',5]]);
+				const myMailBox = escalate.getMailBox('new context');
+				myMailBox.startTimer('a');
+				clock.tick(5);
+				
+				myMailBox.endTimer('a');
+				expect(infoSpy.args).to.be.eql([['timer a took 5','timer','a',5]]);
+			});
+
+			it('should not log timers when activateTimers config is false', ()=>{
+				const clock = sandbox.useFakeTimers();
+				escalate.config(originalConfig);
+				const infoSpy = sandbox.spy();
+				escalate.config({
+					activateTimers:false,
+					loggerStrategy:(context)=>({
+						info:infoSpy,
+						warn:()=>{},
+						error:()=>{},
+						log:()=>{}
+					})
+				})
+				mailBox.startTimer('a');
+				clock.tick(5);
+				
+				mailBox.endTimer('a');
+				expect(infoSpy.args).to.be.eql([]);
+			});
+
 		});
 	});
 });

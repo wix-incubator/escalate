@@ -3,7 +3,16 @@
  */
 import * as _ from 'lodash';
 // TODO nice logger https://github.com/visionmedia/debug
+// by default, ignore context and supply preset values
+var moduleConfig = {
+	loggerStrategy : (ctx) => DEFAULT_LOGGER,
+	panicStrategy :  (ctx) => defaultPanic,
+	logThresholdStrategy :  (ctx) => 'info' ,
+	panicThresholdStrategy :  (ctx) => 'error',
+	activateTimers: false
+};
 
+var mailboxes = [];
 export const levels = Object.freeze(['debug', 'info', 'warn', 'error', 'fatal']);
 const DEBUG= 0, INFO= 1, WARN= 2, ERROR= 3, FATAL=4;
 const levelIdx = Object.freeze({
@@ -14,23 +23,25 @@ const levelIdx = Object.freeze({
 	fatal:FATAL
 });
 export function getMailBox(context){
-	const timers = {};
 	var mailBox = new Mailbox(postOfficeFactory(context))
-	mailBox.startTimer = function(id){
-		if(timers[id]!==undefined){
-			this.warn('Escalate timer already started '+id);
-		}else{
-			timers[id] = Date.now();
+	
+	if(moduleConfig.activateTimers) {
+		const timers = {};
+		mailBox.startTimer = function(id){
+			if(timers[id]!==undefined){
+				this.warn('Escalate timer already started '+id);
+			}else{
+				timers[id] = Date.now();
+			}
 		}
-	}
-	mailBox.endTimer = function(id){
-		console.log('end timer');
-		if(timers[id]===undefined){
-			this.warn('Escalate timer not started '+id);
-		}else{
-			const timeTaken =  Date.now() - timers[id];
-			this.info('timer '+id+' took '+timeTaken,'timer',id,timeTaken);
-			delete timers[id];
+		mailBox.endTimer = function(id){
+			if(timers[id]===undefined){
+				this.warn('Escalate timer not started '+id);
+			}else{
+				const timeTaken =  Date.now() - timers[id];
+				this.info('timer '+id+' took '+timeTaken,'timer',id,timeTaken);
+				delete timers[id];
+			}
 		}
 	}
 	mailboxes.push({mailBox, context});
@@ -53,7 +64,6 @@ class Mailbox {
 		this.postOffice.post(DEBUG, ...params);
 	}
 	info(...params){
-		console.log('posting',...params);
 		this.postOffice.post(INFO, ...params);
 	}
 	warn(...params){
@@ -93,7 +103,7 @@ class Mailbox {
 export function config(configParams){
 	if (configParams) {
 		MAILBOX.warn(`configuration changes : ${Object.keys(configParams)}`);
-		moduleConfig = _.defaults({}, _.cloneDeep(configParams), moduleConfig);
+		moduleConfig = _.defaults({},  _.cloneDeep(configParams),moduleConfig);
 		// replace old strategies;
 		mailboxes.forEach(e => {
 //		MAILBOX.debug(`applying new configuration to ${JSON.stringify(e.context)}`);
@@ -121,16 +131,7 @@ function defaultPanic(...params){
 	throw error;
 }
 
-// by default, ignore context and supply preset values
-var moduleConfig = {
-	loggerStrategy : (ctx) => DEFAULT_LOGGER,
-	panicStrategy :  (ctx) => defaultPanic,
-	logThresholdStrategy :  (ctx) => 'info' ,
-	panicThresholdStrategy :  (ctx) => 'error',
-	activateTimers: false
-};
 
-var mailboxes = [];
 
 function postOfficeFactory(context) {
 	return new PostOffice(
@@ -163,11 +164,8 @@ class PostOffice {
 		
 		if (this.isActive(levelIndex)){
 			if (levelIndex >= this.panicThreshold) {
-				console.log('posting panic');
 				this.panic(...params);
 			} else {
-				console.log('posting info',levels[levelIndex], ...params,this.logger[levels[levelIndex]]);
-				
 				this.logger[levels[levelIndex]](...params);
 			}
 		}
