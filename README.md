@@ -75,3 +75,4 @@ and then open browser at `http://localhost:8080/webpack-dev-server/test`
 
 # License
 We use a custom license, see ```LICENSE.md```
+
